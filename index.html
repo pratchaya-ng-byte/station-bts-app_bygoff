@@ -18,11 +18,27 @@
         <div class="grid grid-cols-2 gap-6 mb-8 border-b border-gray-800 pb-6">
             <div>
                 <label class="block text-xl font-bold mb-2 text-center text-emerald-400">เข้า</label>
-                <select id="select-in" onchange="updateData('in')" class="w-full bg-gray-800 border border-gray-600 rounded p-2 text-center text-lg font-semibold text-white cursor-pointer"><option value="">-- เลือก --</option><optgroup label="สถานีกลาง (CEN)" id="g-cen"></optgroup><optgroup label="สายสุขุมวิท (N)" id="g-n"></optgroup><optgroup label="สายสุขุมวิท (E)" id="g-e"></optgroup><optgroup label="สายสีลม (S/W)" id="g-s"></optgroup><optgroup label="คลัง/จุดพัก (STY/Depot)" id="g-sty"></optgroup><optgroup label="อื่น ๆ (EC)" id="g-oth"></optgroup></select>
+                <select id="select-in" onchange="updateData('in')" class="w-full bg-gray-800 border border-gray-600 rounded p-2 text-center text-lg font-semibold text-white cursor-pointer">
+                    <option value="">-- เลือก --</option>
+                    <optgroup label="สถานีกลาง (CEN)" id="g-cen"></optgroup>
+                    <optgroup label="สายสุขุมวิท (N)" id="g-n"></optgroup>
+                    <optgroup label="สายสุขุมวิท (E)" id="g-e"></optgroup>
+                    <optgroup label="สายสีลม (S/W)" id="g-s"></optgroup>
+                    <optgroup label="คลัง/จุดพัก (STY/Depot)" id="g-sty"></optgroup>
+                    <optgroup label="อื่น ๆ (EC)" id="g-oth"></optgroup>
+                </select>
             </div>
             <div>
                 <label class="block text-xl font-bold mb-2 text-center text-rose-400">ออก</label>
-                <select id="select-out" onchange="updateData('out')" class="w-full bg-gray-800 border border-gray-600 rounded p-2 text-center text-lg font-semibold text-white cursor-pointer"><option value="">-- เลือก --</option><optgroup label="สถานีกลาง (CEN)" id="g-cen2"></optgroup><optgroup label="สายสุขุมวิท (N)" id="g-n2"></optgroup><optgroup label="สายสุขุมวิท (E)" id="g-e2"></optgroup><optgroup label="สายสีลม (S/W)" id="g-s2"></optgroup><optgroup label="คลัง/จุดพัก (STY/Depot)" id="g-sty2"></optgroup><optgroup label="อื่น ๆ (EC)" id="g-oth2"></optgroup></select>
+                <select id="select-out" onchange="updateData('out')" class="w-full bg-gray-800 border border-gray-600 rounded p-2 text-center text-lg font-semibold text-white cursor-pointer">
+                    <option value="">-- เลือก --</option>
+                    <optgroup label="สถานีกลาง (CEN)" id="g-cen2"></optgroup>
+                    <optgroup label="สายสุขุมวิท (N)" id="g-n2"></optgroup>
+                    <optgroup label="สายสุขุมวิท (E)" id="g-e2"></optgroup>
+                    <optgroup label="สายสีลม (S/W)" id="g-s2"></optgroup>
+                    <optgroup label="คลัง/จุดพัก (STY/Depot)" id="g-sty2"></optgroup>
+                    <optgroup label="อื่น ๆ (EC)" id="g-oth2"></optgroup>
+                </select>
             </div>
         </div>
         
@@ -46,36 +62,63 @@
     <script>
         const db = {
             "CEN":{sName:"สยาม (CEN)",sec:"1W, 1E, 1S, 1N",hp:"65001 (CEN)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "N1":{sName:"ราชเทวี (N1)",sec:"1N",hp:"61011 (N1)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "N2":{sName:"พญาไท (N2)",sec:"1N",hp:"61021 (N2)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
             "N3":{sName:"อนุสาวรีย์ชัยฯ (N3)",sec:"2N, 1N",hp:"61031 (N3)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "N4":{sName:"สนามเป้า (N4)",sec:"2N",hp:"61041 (N4)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
             "N5":{sName:"อารีย์ (N5)",sec:"2N, 3N",hp:"61051 (N5)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
             "N7":{sName:"สะพานควาย (N7)",sec:"3N, 4N",hp:"61071 (N7)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "N8":{sName:"หมอชิต (N8)",sec:"4N",hp:"61081 (N8)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "N9":{sName:"ห้าแยกลาดพร้าว (N9)",sec:"4N, 5N",hp:"61091 (N9)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
             "N10":{sName:"พหลโยธิน 24 (N10)",sec:"5N, 6N",hp:"61101 (N10)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
+            "N11":{sName:"รัชโยธิน (N11)",sec:"6N",hp:"61111 (N11)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
             "N12":{sName:"เสนานิคม (N12)",sec:"6N, 7N",hp:"61121 (N12)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
+            "N13":{sName:"ม.เกษตรศาสตร์ (N13)",sec:"7N",hp:"61131 (N13)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
             "N14":{sName:"กรมป่าไม้ (N14)",sec:"7N, 8N",hp:"61141 (N14)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
+            "N15":{sName:"บางบัว (N15)",sec:"8N",hp:"61151 (N15)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
             "N16":{sName:"กรมทหารราบที่ 11 (N16)",sec:"8N, 9N",hp:"61161 (N16)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
+            "N17":{sName:"วัดพระศรีมหาธาตุ (N17)",sec:"9N",hp:"61171 (N17)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
             "N18":{sName:"พหลโยธิน 59 (N18)",sec:"9N, 10N",hp:"61181 (N18)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
+            "N19":{sName:"สายหยุด (N19)",sec:"10N",hp:"61191 (N19)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
             "N20":{sName:"สะพานใหม่ (N20)",sec:"10N, 11N",hp:"61201 (N20)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
             "N21":{sName:"รพ.ภูมิพลอดุลยเดช (N21)",sec:"11N, 12N",hp:"61211 (N21)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
+            "N22":{sName:"พิพิธภัณฑ์กองทัพอากาศ (N22)",sec:"12N",hp:"61221 (N22)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
+            "N23":{sName:"แยก คปอ. (N23)",sec:"12N, 13N",hp:"61231 (N23)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
             "N24":{sName:"คูคต (N24)",sec:"13N, 14N",hp:"61241 (N24)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
-            "E3":{sName:"นานา (E3)",sec:"1E, 2E",hp:"63031 (E3)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E5":{sName:"พร้อมพงษ์ (E5)",sec:"2E, 3E",hp:"63051 (E5)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E6":{sName:"ทองหล่อ (E6)",sec:"3E",hp:"63061 (E6)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E7":{sName:"เอกมัย (E7)",sec:"3E, 4E",hp:"63071 (E7)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E8":{sName:"พระโขนง (E8)",sec:"4E",hp:"63081 (E8)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E9":{sName:"อ่อนนุช (E9)",sec:"4E, 5E",hp:"63091 (E9)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E11":{sName:"ปุณณวิถี (E11)",sec:"5E, 6E",hp:"63111 (E11)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
-            "E13":{sName:"บางนา (E13)",sec:"6E, 7E",hp:"63131 (E13)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
+            "E1":{sName:"ชิดลม (E1)",sec:"1E",hp:"63011 (E1)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "E2":{sName:"เพลินจิต (E2)",sec:"2E",hp:"63021 (E2)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "E3":{sName:"นานา (E3)",sec:"2E, 3E",hp:"63031 (E3)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "E4":{sName:"อโศก (E4)",sec:"3E",hp:"63041 (E4)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "E5":{sName:"พร้อมพงษ์ (E5)",sec:"3E, 4E",hp:"63051 (E5)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "E6":{sName:"ทองหล่อ (E6)",sec:"4E",hp:"63061 (E6)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "E7":{sName:"เอกมัย (E7)",sec:"4E, 5E",hp:"63071 (E7)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "E8":{sName:"พระโขนง (E8)",sec:"5E",hp:"63081 (E8)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "E9":{sName:"อ่อนนุช (E9)",sec:"5E",hp:"63091 (E9)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
+            "E10":{sName:"บางจาก (E10)",sec:"5E, 6E",hp:"63101 (E10)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
+            "E11":{sName:"ปุณณวิถี (E11)",sec:"6E",hp:"63111 (E11)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
+            "E12":{sName:"อุดมสุข (E12)",sec:"6E, 7E",hp:"63121 (E12)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
+            "E13":{sName:"บางนา (E13)",sec:"7E",hp:"63131 (E13)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
+            "E14":{sName:"แบริ่ง (E14)",sec:"7E, 8E",hp:"63141 (E14)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
+            "E15":{sName:"สำโรง (E15)",sec:"8E",hp:"63151 (E15)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
             "E16":{sName:"ปู่เจ้า (E16)",sec:"8E, 9E",hp:"63161 (E16)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
-            "E17":{sName:"ช้างเอราวัณ (E17)",sec:"9E, 10E",hp:"63171 (E17)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
+            "E17":{sName:"ช้างเอราวัณ (E17)",sec:"9E",hp:"63171 (E17)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
+            "E18":{sName:"โรงเรียนนายเรือ (E18)",sec:"9E, 10E",hp:"63181 (E18)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
             "E19":{sName:"ปากน้ำ (E19)",sec:"10E, 11E",hp:"63191 (E19)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
+            "E20":{sName:"ศรีนครินทร์ (E20)",sec:"11E",hp:"63201 (E20)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
             "E21":{sName:"แพรกษา (E21)",sec:"11E, 12E",hp:"63211 (E21)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
+            "E22":{sName:"สายลวด (E22)",sec:"12E",hp:"63221 (E22)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
             "E23":{sName:"เคหะฯ (E23)",sec:"12E, 13E",hp:"63231 (E23)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
             "W1":{sName:"สนามกีฬาแห่งชาติ (W1)",sec:"1W, 1S",hp:"64011 (W1)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
             "S1":{sName:"ราชดำริ (S1)",sec:"1W, 1S",hp:"62011 (S1)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
             "S2":{sName:"ศาลาแดง (S2)",sec:"1S, 2S",hp:"62021 (S2)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
+            "S3":{sName:"ช่องนนทรี (S3)",sec:"2S",hp:"62031 (S3)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
+            "S4":{sName:"เซนต์หลุยส์ (S4)",sec:"2S",hp:"62041 (S4)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
             "S5":{sName:"สุรศักดิ์ (S5)",sec:"2S, 3S",hp:"62051 (S5)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
+            "S6":{sName:"สะพานตากสิน (S6)",sec:"3S",hp:"62061 (S6)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
             "S7":{sName:"กรุงธนบุรี (S7)",sec:"3S, 4S",hp:"62071 (S7)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
+            "S8":{sName:"วงเวียนใหญ่ (S8)",sec:"4S",hp:"62081 (S8)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
             "S9":{sName:"โพธิ์นิมิตร (S9)",sec:"4S, 5S",hp:"62091 (S9)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
+            "S10":{sName:"ตลาดพลู (S10)",sec:"5S",hp:"62101 (S10)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
             "S11":{sName:"วุฒากาศ (S11)",sec:"5S, 6S",hp:"62111 (S11)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
             "S12":{sName:"บางหว้า (S12)",sec:"6S, 7S, 8S, STY",hp:"62121 (S12)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
             "STY":{sName:"Stabling Yard (STY)",sec:"STY, 8S, 7S, 6S",hp:"-",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
