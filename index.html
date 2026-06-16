@@ -1,100 +1,10 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Station Info System</title>
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body class="bg-gray-900 min-h-screen flex items-center justify-center text-white font-sans m-0 p-4">
-    <div class="w-full max-w-2xl bg-black border border-gray-700 rounded-lg p-6 shadow-2xl">
-        
-        <div class="flex justify-center mb-6">
-            <img src="logo.png" alt="Logo" class="w-24 h-24 object-contain">
-        </div>
-
-        <div class="grid grid-cols-2 gap-6 mb-8 border-b border-gray-800 pb-6">
-            <div>
-                <label class="block text-xl font-bold mb-2 text-center text-emerald-400">เข้า</label>
-                <select id="select-in" onchange="updateData('in')" class="w-full bg-gray-800 border border-gray-600 rounded p-2 text-center text-lg font-semibold text-white cursor-pointer"><option value="">-- เลือก --</option><optgroup label="สถานีกลาง (CEN)" id="g-cen"></optgroup><optgroup label="สายสุขุมวิท (N)" id="g-n"></optgroup><optgroup label="สายสุขุมวิท (E)" id="g-e"></optgroup><optgroup label="สายสีลม (S/W)" id="g-s"></optgroup><optgroup label="คลัง/จุดพัก (STY/Depot)" id="g-sty"></optgroup><optgroup label="อื่น ๆ (EC)" id="g-oth"></optgroup></select>
-            </div>
-            <div>
-                <label class="block text-xl font-bold mb-2 text-center text-rose-400">ออก</label>
-                <select id="select-out" onchange="updateData('out')" class="w-full bg-gray-800 border border-gray-600 rounded p-2 text-center text-lg font-semibold text-white cursor-pointer"><option value="">-- เลือก --</option><optgroup label="สถานีกลาง (CEN)" id="g-cen2"></optgroup><optgroup label="สายสุขุมวิท (N)" id="g-n2"></optgroup><optgroup label="สายสุขุมวิท (E)" id="g-e2"></optgroup><optgroup label="สายสีลม (S/W)" id="g-s2"></optgroup><optgroup label="คลัง/จุดพัก (STY/Depot)" id="g-sty2"></optgroup><optgroup label="อื่น ๆ (EC)" id="g-oth2"></optgroup></select>
-            </div>
-        </div>
-        <div class="grid grid-cols-2 gap-6">
-            <div class="space-y-4">
-                <div><label class="block text-sm text-emerald-400 font-medium mb-1">ชื่อสถานี เข้า</label><input type="text" id="station-in" readonly class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-white font-bold" placeholder="รอเลือก..."></div>
-                <div><label class="block text-sm text-yellow-400 font-medium mb-1">Section ไฟ</label><input type="text" id="section-in" readonly class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-yellow-400 font-bold" placeholder="-"></div>
-                <div><label class="block text-sm text-sky-400 font-medium mb-1">Hand portable</label><input type="text" id="hp1-in" readonly class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-white font-bold text-xl" placeholder="-"></div>
-                <div><label class="block text-sm text-sky-400 font-medium mb-1">CCR (หลัก)</label><input type="text" id="ccr-in" readonly class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-emerald-400 font-bold text-2xl" placeholder="-"></div>
-                <div><label class="block text-sm text-amber-400 font-medium mb-1">เบอร์สำรอง</label><input type="text" id="phone-in" readonly class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-amber-400 font-bold text-2xl" placeholder="-"></div>
-            </div>
-            <div class="space-y-4">
-                <div><label class="block text-sm text-rose-400 font-medium mb-1">ชื่อสถานี ออก</label><input type="text" id="station-out" readonly class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-white font-bold" placeholder="รอเลือก..."></div>
-                <div><label class="block text-sm text-yellow-400 font-medium mb-1">Section ไฟ</label><input type="text" id="section-out" readonly class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-yellow-400 font-bold" placeholder="-"></div>
-                <div><label class="block text-sm text-sky-400 font-medium mb-1">Hand portable</label><input type="text" id="hp1-out" readonly class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-white font-bold text-xl" placeholder="-"></div>
-                <div><label class="block text-sm text-sky-400 font-medium mb-1">CCR (หลัก)</label><input type="text" id="ccr-out" readonly class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-emerald-400 font-bold text-2xl" placeholder="-"></div>
-                <div><label class="block text-sm text-amber-400 font-medium mb-1">เบอร์สำรอง</label><input type="text" id="phone-out" readonly class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-amber-400 font-bold text-2xl" placeholder="-"></div>
-            </div>
-        </div>
-    </div>
-    <script>
-        const db = {
-            "CEN":{sName:"สยาม (CEN)",sec:"1W, 1E, 1S, 1N",hp:"65001 (CEN)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "N3":{sName:"อนุสาวรีย์ชัยฯ (N3)",sec:"2N, 1N",hp:"61031 (N3)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "N5":{sName:"อารีย์ (N5)",sec:"2N, 3N",hp:"61051 (N5)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "N7":{sName:"สะพานควาย (N7)",sec:"3N, 4N",hp:"61071 (N7)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "N10":{sName:"พหลโยธิน 24 (N10)",sec:"5N, 6N",hp:"61101 (N10)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
-            "N12":{sName:"เสนานิคม (N12)",sec:"6N, 7N",hp:"61121 (N12)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
-            "N14":{sName:"กรมป่าไม้ (N14)",sec:"7N, 8N",hp:"61141 (N14)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
-            "N16":{sName:"กรมทหารราบที่ 11 (N16)",sec:"8N, 9N",hp:"61161 (N16)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
-            "N18":{sName:"พหลโยธิน 59 (N18)",sec:"9N, 10N",hp:"61181 (N18)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
-            "N20":{sName:"สะพานใหม่ (N20)",sec:"10N, 11N",hp:"61201 (N20)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
-            "N21":{sName:"รพ.ภูมิพลอดุลยเดช (N21)",sec:"11N, 12N",hp:"61211 (N21)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
-            "N24":{sName:"คูคต (N24)",sec:"13N, 14N",hp:"61241 (N24)",ccr:"10270 (SKT3)",sp:"10280 (SP3)"},
-            "E3":{sName:"นานา (E3)",sec:"1E, 2E",hp:"63031 (E3)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E5":{sName:"พร้อมพงษ์ (E5)",sec:"2E, 3E",hp:"63051 (E5)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E6":{sName:"ทองหล่อ (E6)",sec:"3E",hp:"63061 (E6)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E7":{sName:"เอกมัย (E7)",sec:"3E, 4E",hp:"63071 (E7)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E8":{sName:"พระโขนง (E8)",sec:"4E",hp:"63081 (E8)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E9":{sName:"อ่อนนุช (E9)",sec:"4E, 5E",hp:"63091 (E9)",ccr:"10160 (SKT1)",sp:"10260 (SP1)"},
-            "E11":{sName:"ปุณณวิถี (E11)",sec:"5E, 6E",hp:"63111 (E11)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
-            "E13":{sName:"บางนา (E13)",sec:"6E, 7E",hp:"63131 (E13)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
-            "E16":{sName:"ปู่เจ้า (E16)",sec:"8E, 9E",hp:"63161 (E16)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
-            "E17":{sName:"ช้างเอราวัณ (E17)",sec:"9E, 10E",hp:"63171 (E17)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
-            "E19":{sName:"ปากน้ำ (E19)",sec:"10E, 11E",hp:"63191 (E19)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
-            "E21":{sName:"แพรกษา (E21)",sec:"11E, 12E",hp:"63211 (E21)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
-            "E23":{sName:"เคหะฯ (E23)",sec:"12E, 13E",hp:"63231 (E23)",ccr:"10220 (SKT2)",sp:"10230 (SP2)"},
-            "W1":{sName:"สนามกีฬาแห่งชาติ (W1)",sec:"1W, 1S",hp:"64011 (W1)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
-            "S1":{sName:"ราชดำริ (S1)",sec:"1W, 1S",hp:"62011 (S1)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
-            "S2":{sName:"ศาลาแดง (S2)",sec:"1S, 2S",hp:"62021 (S2)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
-            "S5":{sName:"สุรศักดิ์ (S5)",sec:"2S, 3S",hp:"62051 (S5)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
-            "S7":{sName:"กรุงธนบุรี (S7)",sec:"3S, 4S",hp:"62071 (S7)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
-            "S9":{sName:"โพธิ์นิมิตร (S9)",sec:"4S, 5S",hp:"62091 (S9)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
-            "S11":{sName:"วุฒากาศ (S11)",sec:"5S, 6S",hp:"62111 (S11)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
-            "S12":{sName:"บางหว้า (S12)",sec:"6S, 7S, 8S, STY",hp:"62121 (S12)",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
-            "STY":{sName:"Stabling Yard (STY)",sec:"STY, 8S, 7S, 6S",hp:"-",ccr:"10170 (SLM)",sp:"10210 (SP-SLM)"},
-            "Depot MC":{sName:"ศูนย์ซ่อมฯ หมอชิต",sec:"Depot MC",hp:"10180 (DPT-MC)",ccr:"10180 (DPT1)",sp:"10310 (DPT-MC)"},
-            "Depot SK":{sName:"ศูนย์ซ่อมฯ สมุทรปราการ",sec:"Depot SK",hp:"10240 (DPT-SK)",ccr:"10240 (DPT SA1)",sp:"10620 (DPT-SK)"},
-            "Depot KK":{sName:"ศูนย์ซ่อมฯ คูคต",sec:"Depot KK",hp:"10250 (DPT-KK)",ccr:"10250 (DPT KK1)",sp:"10720 (DPT-KK)"},
-            "EC":{sName:"งานตัดไฟ 24 KV",sec:"24 KV",hp:"10190 (EC)",ccr:"10190 (EC 1)",sp:"10290 (EC-Backup)"}
-        };
-        const buildOptions = (t1, t2, list) => {
-            const html = list.map(k => `<option value="${k}">${k}</option>`).join('');
-            document.getElementById(t1).innerHTML = html; document.getElementById(t2).innerHTML = html;
-        };
-       const keys = Object.keys(db);
+const keys = Object.keys(db);
         buildOptions('g-cen', 'g-cen2', ['CEN']);
         buildOptions('g-n', 'g-n2', keys.filter(k => k.startsWith('N')));
         buildOptions('g-e', 'g-e2', keys.filter(k => k.startsWith('E')));
         buildOptions('g-s', 'g-s2', keys.filter(k => k.startsWith('S') || k.startsWith('W')));
         buildOptions('g-sty', 'g-sty2', ['STY']);
         buildOptions('g-oth', 'g-oth2', ['Depot MC','Depot SK','Depot KK','EC']);
-
         function updateData(t) {
             const id = document.getElementById(`select-${t}`).value;
             const el = (name) => document.getElementById(`${name}-${t}`);
